@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const getVisibleTodos = (
   todos,
@@ -33,12 +34,11 @@ const Todo = ({
 }) => (
   <li
     onClick={onClick}
-    style={{
-      textDecoration:
-        completed ?
-          'line-through' :
-          'none'
-    }}
+    className={
+      completed ?
+        "todo-list__item--completed" :
+        "todo-list__item--active"
+    }
   >
     {text}
   </li>
@@ -48,7 +48,13 @@ const TodoList = ({
   todos,
   onTodoClick
 }) => (
-  <ul>
+  <ReactCSSTransitionGroup
+        component="ul"
+        className="todo-list"
+        transitionName="todo-transition"
+        transitionEnterTimeout={100}
+        transitionLeaveTimeout={100}
+      >
     {todos.map(todo =>
       <Todo
         key={todo.id}
@@ -56,7 +62,7 @@ const TodoList = ({
         onClick={() => onTodoClick(todo.id)}
       />
     )}
-  </ul>
+  </ReactCSSTransitionGroup>
 );
 
 const mapStateToTodoListProps = (
